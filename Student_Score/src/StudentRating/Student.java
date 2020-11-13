@@ -9,6 +9,11 @@ public class Student {
 		this.marks = marks;
 		this.clg = clg;
 	}
+	public Student(String id, String name, String marks) {
+		this.id = id;
+		this.name = name;
+		this.marks = marks;
+	}
 
 	String display() {
 		return id + " " + name + " " + marks + " " + clg;

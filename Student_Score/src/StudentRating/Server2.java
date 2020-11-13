@@ -1,6 +1,7 @@
 package StudentRating;
 
 import java.rmi.Naming;
+import java.rmi.Remote;
 import java.rmi.registry.LocateRegistry;
 
 public class Server2 {
@@ -13,7 +14,7 @@ public class Server2 {
             int port = 1114;
 			ServerImpl impl = new ServerImpl();
 			LocateRegistry.createRegistry(port);	
-			Naming.rebind("rmi://localhost:1114/Server2", impl);
+			Naming.rebind("rmi://localhost:1114/Server2", (Remote)impl);
 		}
 		catch(Exception e) 
 		{

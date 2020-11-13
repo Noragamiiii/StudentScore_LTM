@@ -5,7 +5,7 @@ import java.rmi.server.*;
 import java.util.*;
 
 public class ServerImpl extends UnicastRemoteObject implements ServerInterface {
-	List<Student> list = new ArrayList<>();
+	List<Student> list = new ArrayList<>();//luu nguyen 
 	int count = 0;
 
 	public ServerImpl() throws RemoteException {
@@ -29,28 +29,34 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface {
 
 	public String getTop5(String StudentR[][]) throws RemoteException {
 		String data = "Still Processing the result..";
-		if (isResultReady()) {
-			System.out.println("\n\nTop 5 Students");
-			data = "";
-			sort();
-			for (int i = 0; i < 5; i++) {
-				
-				Student student = list.get(i);
-				System.out.println(student.display());
-				data = data + student.id + "\t" + student.name + "\t" + student.marks + "\n";
-			}
+
+		System.out.println("\n\nTop 5 Students");
+		data = "";
+		sortStudent(StudentR);
+//		sort();
+		for (int i = 0; i < 5; i++) {
+			Student student = list.get(i);
+			System.out.println(student.display());
+			data = data + student.id + "\t" + student.name + "\t" + student.marks + "\n";
+
 		}
 		return data;
 	}
-		public void sortStudent(List<Student> list) throws RemoteException {
-			
-			if(isResultReady()) {
-				for(int i = 0; i<= list.size(); i++) {
-					
+
+	public void sortStudent(String Student[][]) throws RemoteException {
+		list = TransformData(Student);
+		float temp;
+		for (int i = 0; i < Student.length; i++) {
+			for (int j = i + 1; j < Student.length; j++) {
+				if (Float.parseFloat(Student[i][3]) > Float.parseFloat(Student[j][3])) {
+					temp = Float.parseFloat(Student[i][3]);
+					Student[i][3] = Student[j][3];
+					temp = Float.parseFloat(Student[j][3]);
 				}
 			}
 		}
-		
+	}
+
 	void sort() {
 		Comparator cmp = new MarksComparator();
 		Collections.sort(list, cmp);
@@ -66,20 +72,44 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface {
 	// tinh diem trung binh cua ca lop
 	@Override
 	public float avgMark(String[][] StudentR) throws RemoteException {
-		float avgmark ;
+		float avgmark;
 		float sum = 0;
 		int avg = StudentR.length;
-		for(int i = 0; i<StudentR.length; i++) {
+		for (int i = 0; i < StudentR.length; i++) {
 			sum += Float.parseFloat(StudentR[i][3]);
 		}
-		avgmark = sum/avg;
+		avgmark = sum / avg;
 		return avgmark;
 	}
 
 	@Override
 	public void classifyStudent(String[][] Student) throws RemoteException {
-				
-		
+		String classify = "";
+		int count = 0;
+		for (int i = 0; i < Student.length; i++) {
+			if (Float.parseFloat(Student[i][2]) >= 0 && Float.parseFloat(Student[i][2]) <= 100) {
+				if (Float.parseFloat(Student[i][2]) >= 8 && Float.parseFloat(Student[i][2]) <= 100 ) {
+					classify = "Gioi";
+				} else if (Float.parseFloat(Student[i][2]) >= 65 && Float.parseFloat(Student[i][2]) <85) {
+					classify = "Kha";
+				} else if (Float.parseFloat(Student[i][2]) >= 50 && Float.parseFloat(Student[i][2]) < 65) {
+					classify = "Trung Binh";
+				} else {
+					classify = "Yeu";
+				}
+			}
+
+		}
 	}
 
+	@Override
+	public List<Student> TransformData(String[][] Student) throws RemoteException {
+
+		for (int i = 0; i < Student.length; i++) {
+			Student s = new Student(Student[i][0], Student[i][1], Student[i][2]);
+			list.add(s);
+		}
+
+		return list;
+	}
 }

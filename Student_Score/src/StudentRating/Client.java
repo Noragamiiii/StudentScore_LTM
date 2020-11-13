@@ -19,9 +19,9 @@ public class Client extends JFrame implements ActionListener {
 	JButton browse, send, result;
 	String Studentlist[][] = new String[10][3];// 10 students, with name - class - score
 	String serverURL1 = "rmi://localhost:1112/Server1";
-	String serverURL2= "rmi://localhost:1114/Server2";
+	String serverURL2 = "rmi://localhost:1114/Server2";
 	String serverURL3 = "rmi://localhost:1113/Server3";
-	ServerInterface server;
+	ServerInterface server1, server2, server3;
 	boolean isSent = false;
 	String oldFileName = "";
 
@@ -72,16 +72,15 @@ public class Client extends JFrame implements ActionListener {
 			send.addActionListener(this);
 			result.addActionListener(this);
 
-			server = (ServerInterface) Naming.lookup(serverURL1);
+			server1 = (ServerInterface) Naming.lookup(serverURL1);
+			server2 = (ServerInterface) Naming.lookup(serverURL2);
+			server3 = (ServerInterface) Naming.lookup(serverURL3);
 			while (true) {
 				Thread.sleep(300);
-				if (server.isResultReady()) {
-					result.setVisible(true);
-				}
+				result.setVisible(true);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-
 		}
 	}
 
@@ -96,37 +95,41 @@ public class Client extends JFrame implements ActionListener {
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("csv", "txt");
 				chooser.setFileFilter(filter);
 				int returnVal = chooser.showOpenDialog(null);
+				// chon file
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = chooser.getSelectedFile();
-
-					BufferedReader br = new BufferedReader(new FileReader(file.getName()));//given the name of the file to read from.
+					BufferedReader br = new BufferedReader(new FileReader(file.getName()));// given the name of the file
 					String line = "";
 					String separator = "-";
 					// chua gui di lan nao
 					if (!isSent) {
-						System.out.println(file.getName());//get file name and print it first
+						System.out.println(file.getName());// get file name and print it first
 						if (chooser.getTypeDescription(file).equals("Text Document")) {// file .txt, get separator "-"
 							fileName.setText(file.getName());
 							separator = "-";
-							int i = 0;
-							while ((line = br.readLine()) != null ) {
-								Studentlist[i] = line.split(separator);
-								i++;
-							}
-							send.setVisible(true);
-						} else if (chooser.getTypeDescription(file)
-								.equals("Microsoft Office Excel Comma Separated Values File")) {// file exel --> separator ","
-							fileName.setText(file.getName());
-							separator = ",";
 							int i = 0;
 							while ((line = br.readLine()) != null) {
 								Studentlist[i] = line.split(separator);
 								i++;
 							}
 							send.setVisible(true);
+						} else if (chooser.getTypeDescription(file)
+								.equals("Microsoft Office Excel Comma Separated Values File")) {// file exel -->
+																								// separator ","
+							fileName.setText(file.getName());
+							separator = ",";
+							int i = 0;
+							// doc file
+							while ((line = br.readLine()) != null) {
+								Studentlist[i] = line.split(separator);
+								i++;
+							}
+							// doc duoc file roi moi cho gui hay khong
+							send.setVisible(true);
+							// chi duoc gui 1 lan/ 1 lan run
 						} else
-							JOptionPane.showMessageDialog(null,"Invalid File");
-
+							JOptionPane.showMessageDialog(null, "Invalid File");
+						// sent --> khong cho send lai
 					} else {
 						JOptionPane.showMessageDialog(null, "Submit only one");
 						send.setVisible(false);
@@ -135,9 +138,10 @@ public class Client extends JFrame implements ActionListener {
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
+			// bat dau gui du lieu di
 		} else if (send == sourceObj) {
 			try {
-				if (oldFileName.length() == 0 && (className == null || className.getText().length() == 0)) {
+				if ((className == null || className.getText().length() == 0)) {
 					JOptionPane.showMessageDialog(null, "Enter you class");
 					return;
 				} else if (!isSent) {
@@ -145,10 +149,12 @@ public class Client extends JFrame implements ActionListener {
 					for (int i = 0; i < Studentlist.length; i++) {
 						System.out.println(Studentlist[i][0] + " " + Studentlist[i][1] + "  " + Studentlist[i][2]);
 					}
-					server.sendData(Studentlist, className.getText());
-					String data = server.getTop5(Studentlist);
+					server1.sendData(Studentlist, className.getText());
+
+					String data = server1.getTop5(Studentlist);
+					server1.TransformData(Studentlist);
 					System.out.println(data);
-					isSent = true;
+					isSent = true;// control send thread
 				} else
 					JOptionPane.showMessageDialog(null, "Submit only one");
 			} catch (Exception ex) {
@@ -157,7 +163,7 @@ public class Client extends JFrame implements ActionListener {
 			}
 		} else {
 			try {
-				display.setText(server.getTop5(Studentlist));
+				display.setText(server1.getTop5(Studentlist));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}

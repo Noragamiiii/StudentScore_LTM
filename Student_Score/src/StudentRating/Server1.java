@@ -13,7 +13,7 @@ public class Server1
             int port = 1112;
 			ServerImpl impl = new ServerImpl();
 			LocateRegistry.createRegistry(port);	
-			Naming.rebind("rmi://localhost:1112/Server1", impl);
+			Naming.rebind("rmi://localhost:1112/Server1", (Remote)impl);
 		}
 		catch(Exception e) 
 		{
