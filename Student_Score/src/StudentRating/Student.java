@@ -1,8 +1,10 @@
 package StudentRating;
 
-public class Student {
-	String id, name, marks, clg;
+import java.io.Serializable;
 
+public class Student implements Serializable  {
+	String id, name, marks, clg;
+	private static final long serialVersionUID = 1190476516911661470L;
 	Student(String id, String name, String marks, String clg) {
 		this.id = id;
 		this.name = name;
@@ -16,6 +18,6 @@ public class Student {
 	}
 
 	String display() {
-		return id + " " + name + " " + marks + " " + clg;
+		return id + " " + name + " " + marks;
 	}
 }

@@ -76,8 +76,10 @@ public class Client extends JFrame implements ActionListener {
 			server2 = (ServerInterface) Naming.lookup(serverURL2);
 			server3 = (ServerInterface) Naming.lookup(serverURL3);
 			while (true) {
-				Thread.sleep(300);
+				Thread.sleep(1000);
+				if(server1.isResultReady()) {
 				result.setVisible(true);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
