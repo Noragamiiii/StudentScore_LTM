@@ -7,7 +7,7 @@ import java.util.*;
 public class ServerImpl extends UnicastRemoteObject implements ServerInterface {
 	private static final long serialVersionUID = 1L;
 	List<Student> list = new ArrayList<>();//luu nguyen 
-	static int count = 0;
+	 int count = 0;
 
 	public ServerImpl() throws RemoteException {
 	}
@@ -20,6 +20,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface {
 			System.out.println(s.display());
 		}
 		count++;
+		System.out.println("Count: "+ count);
 	}
 	@Override
 	public String ListStudent(String Student[][]) {
@@ -48,25 +49,25 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface {
 		sort();
 		for (int i = 0; i < 5; i++) {
 			Student student = list.get(i);
-//			System.out.println(student.display());
+			System.out.println(student.display());
 			data = data + student.id + "\t" + student.name + "\t" + student.marks + "\n";
 		}
 		return data;
 	}
 // tab 1
 	@Override
-	public void sortStudent(String Student[][]) throws RemoteException {
-		list = TransformData(Student);
-		float temp;
+	public String sortStudent(String Student[][]) throws RemoteException {
+		String data = "Still Processing the result..";
+		System.out.println("\n\nTop 5 Students");
+		data = "";
+		//sortStudent(StudentR);
+		sort();
 		for (int i = 0; i < Student.length; i++) {
-			for (int j = i + 1; j < Student.length; j++) {
-				if (Float.parseFloat(Student[i][2]) > Float.parseFloat(Student[j][2])) {
-					temp = Float.parseFloat(Student[i][2]);
-					Student[i][2] = Student[j][2];
-					temp = Float.parseFloat(Student[j][2]);
-				}
-			}
+			Student student = list.get(i);
+			System.out.println(student.display());
+			data = data + student.id + "\t" + student.name + "\t" + student.marks + "\n";
 		}
+		return data;
 	}
 	// tab 3
 		@Override

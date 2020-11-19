@@ -9,7 +9,7 @@ public interface ServerInterface extends Remote
 	public String getTop5(String StudentR[][]) throws RemoteException;
 	public float avgMark(String StudentR[][]) throws RemoteException;
 	public String classifyStudent(String Student[][]) throws RemoteException;
-	public void sortStudent(String Student[][]) throws RemoteException;
+	public String sortStudent(String Student[][]) throws RemoteException;
 	public String ListStudent(String Student[][]) throws RemoteException;
 	
 }

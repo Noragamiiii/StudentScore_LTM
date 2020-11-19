@@ -14,7 +14,7 @@ public class TestSplit {
 			student[i] = A.split("-");
 			i ++;
 		}
-		System.out.println(Arrays.deepToString(student));
+		//System.out.println(Arrays.deepToString(student));
 	}
 
 }

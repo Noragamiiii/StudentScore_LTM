@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.rmi.Naming;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -59,7 +60,7 @@ public class Client_1 extends JFrame implements ActionListener {
 	String serverURL1 = "rmi://localhost:1112/Server1";
 	String serverURL2 = "rmi://localhost:1114/Server2";
 	String serverURL3 = "rmi://localhost:1113/Server3";
-	
+
 	ServerInterface server1, server2, server3;
 
 	ArrayList<Student> list = new ArrayList<Student>();
@@ -71,130 +72,129 @@ public class Client_1 extends JFrame implements ActionListener {
 
 	public Client_1() {
 
-		super("Client_1"); 
+		super("Client_1");
 		try {
 			InitComponent();
 			server1 = (ServerInterface) Naming.lookup(serverURL1);
 			server2 = (ServerInterface) Naming.lookup(serverURL2);
 			server3 = (ServerInterface) Naming.lookup(serverURL3);
 
+			// can not compare
 			while (true) {
 				Thread.sleep(1000);
-
+				// server is received data
 				if (server1.isResultReady() && server2.isResultReady() && server3.isResultReady()) {
-					btnResult.setVisible(true);
+					btnResult.setVisible(true);// already to show result in client
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-		
-			private void InitComponent() {
-			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			setBounds(100, 100, 600, 400);
-			contentPane = new JPanel();
-			contentPane.setBackground(SystemColor.inactiveCaption);
-			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-			setContentPane(contentPane);
-			contentPane.setOpaque(false);
-		    setLocationRelativeTo(null);
-		    setVisible(true);
 
-			panel = new JPanel();
-			panel.setBounds(0, 0, 584, 361);
-			panel.setBackground(SystemColor.inactiveCaption);
+	private void InitComponent() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 600, 457);
+		contentPane = new JPanel();
+		contentPane.setBackground(SystemColor.inactiveCaption);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setOpaque(false);
+		setLocationRelativeTo(null);
+		setVisible(true);
 
-			className = new JLabel("Class name");
-			className.setBounds(10, 22, 98, 28);
-			className.setFont(new Font("Segoe UI", Font.BOLD, 14));
+		panel = new JPanel();
+		panel.setBounds(0, 0, 584, 418);
+		panel.setBackground(SystemColor.inactiveCaption);
 
-			fileName = new JLabel("Browse file");
-			fileName.setBounds(10, 69, 98, 28);
-			fileName.setFont(new Font("Segoe UI", Font.BOLD, 14));
+		className = new JLabel("Class name");
+		className.setBounds(10, 22, 98, 28);
+		className.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
-			txtClassName = new JTextField();
-			txtClassName.setBounds(118, 22, 197, 28);
-			txtClassName.setBackground(SystemColor.inactiveCaptionBorder);
-			txtClassName.setBorder(null);
-			txtClassName.setColumns(10);
+		fileName = new JLabel("Browse file");
+		fileName.setBounds(10, 69, 98, 28);
+		fileName.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
-			btnChooseFile = new JButton("Choose file");
-			btnChooseFile.setBounds(118, 74, 117, 23);
-			btnChooseFile.setBackground(SystemColor.inactiveCaptionBorder);
-			btnChooseFile.setBorder(null);
-			btnChooseFile.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+		txtClassName = new JTextField();
+		txtClassName.setBounds(118, 22, 197, 28);
+		txtClassName.setBackground(SystemColor.inactiveCaptionBorder);
+		txtClassName.setBorder(null);
+		txtClassName.setColumns(10);
 
-			txtFilename = new JTextField();
-			txtFilename.setBounds(256, 75, 74, 20);
-			txtFilename.setBackground(SystemColor.inactiveCaption);
-			txtFilename.setEditable(false);
-			txtFilename.setColumns(10);
+		btnChooseFile = new JButton("Choose file");
+		btnChooseFile.setBounds(118, 74, 117, 23);
+		btnChooseFile.setBackground(SystemColor.inactiveCaptionBorder);
+		btnChooseFile.setBorder(null);
+		btnChooseFile.setFont(new Font("Segoe UI", Font.PLAIN, 11));
 
-			btnSend = new JButton("Send");
-			btnSend.setBounds(10, 115, 74, 23);
-			btnSend.setBackground(SystemColor.inactiveCaptionBorder);
-			btnSend.setFont(new Font("Segoe UI", Font.BOLD, 11));
-			btnSend.setBorder(null);
+		txtFilename = new JTextField();
+		txtFilename.setBounds(256, 75, 74, 20);
+		txtFilename.setBackground(SystemColor.inactiveCaption);
+		txtFilename.setEditable(false);
+		txtFilename.setColumns(10);
 
-			btnResult = new JButton("Result");
-			btnResult.setBounds(118, 115, 74, 23);
-			btnResult.setFont(new Font("Segoe UI", Font.BOLD, 11));
-			btnResult.setBorder(null);
-			btnResult.setBackground(SystemColor.inactiveCaptionBorder);
+		btnSend = new JButton("Send");
+		btnSend.setBounds(10, 147, 74, 23);
+		btnSend.setBackground(SystemColor.inactiveCaptionBorder);
+		btnSend.setFont(new Font("Segoe UI", Font.BOLD, 11));
+		btnSend.setBorder(null);
 
-			JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-			tabbedPane.setBounds(10, 149, 564, 200);
+		btnResult = new JButton("Result");
+		btnResult.setBounds(118, 147, 74, 23);
+		btnResult.setFont(new Font("Segoe UI", Font.BOLD, 11));
+		btnResult.setBorder(null);
+		btnResult.setBackground(SystemColor.inactiveCaptionBorder);
 
-			JPanel sv1 = new JPanel();
-			sv1.setBackground(SystemColor.controlLtHighlight);
-			tabbedPane.addTab("Sort Students", null, sv1, null);
-			sv1.setLayout(null);
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBounds(10, 201, 564, 206);
 
-			txtSortStudent = new JTextArea();
-			txtSortStudent.setBounds(0, 0, 569, 172);
-			sv1.add(txtSortStudent);
+		JPanel sv1 = new JPanel();
+		sv1.setBackground(SystemColor.controlLtHighlight);
+		tabbedPane.addTab("Sort Students", null, sv1, null);
+		sv1.setLayout(null);
 
-			JPanel panel_2 = new JPanel();
-			panel_2.setBackground(SystemColor.controlLtHighlight);
-			tabbedPane.addTab("Top 5 Students", null, panel_2, null);
-			panel_2.setLayout(null);
+		txtSortStudent = new JTextArea();
+		txtSortStudent.setBounds(0, 0, 569, 172);
+		sv1.add(txtSortStudent);
 
-			txtTop5 = new JTextArea();
-			txtTop5.setBounds(0, 0, 575, 172);
-			panel_2.add(txtTop5);
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(SystemColor.controlLtHighlight);
+		tabbedPane.addTab("Top 5 Students", null, panel_2, null);
+		panel_2.setLayout(null);
 
-			JPanel panel_3 = new JPanel();
-			panel_3.setBackground(SystemColor.controlLtHighlight);
-			tabbedPane.addTab("Classify Students", null, panel_3, null);
-			panel_3.setLayout(null);
+		txtTop5 = new JTextArea();
+		txtTop5.setBounds(0, 0, 575, 172);
+		panel_2.add(txtTop5);
 
-			txtClsStudent = new JTextArea();
-			txtClsStudent.setBounds(0, 0, 575, 172);
-			panel_3.add(txtClsStudent);
+		JPanel panel_3 = new JPanel();
+		panel_3.setBackground(SystemColor.controlLtHighlight);
+		tabbedPane.addTab("Classify Students", null, panel_3, null);
+		panel_3.setLayout(null);
 
-			txtFilename.setEditable(false);
-			contentPane.setLayout(null);
-			contentPane.add(panel);
-			panel.setLayout(null);
-			panel.add(className);
-			panel.add(txtClassName);
-			panel.add(fileName);
-			panel.add(btnResult);
-			panel.add(btnChooseFile);
-			panel.add(txtFilename);
-			panel.add(btnSend);
-			panel.add(tabbedPane);
+		txtClsStudent = new JTextArea();
+		txtClsStudent.setBounds(0, 0, 575, 172);
+		panel_3.add(txtClsStudent);
 
-			btnResult.setVisible(false);
-			btnSend.setVisible(false);
+		txtFilename.setEditable(false);
+		contentPane.setLayout(null);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		panel.add(className);
+		panel.add(txtClassName);
+		panel.add(fileName);
+		panel.add(btnResult);
+		panel.add(btnChooseFile);
+		panel.add(txtFilename);
+		panel.add(btnSend);
+		panel.add(tabbedPane);
 
-			btnResult.addActionListener(this);
-			btnSend.addActionListener(this);
-			btnChooseFile.addActionListener(this);
-			}
+		btnResult.setVisible(true);
+		btnSend.setVisible(true);
 
-			
+		btnResult.addActionListener(this);
+		btnSend.addActionListener(this);
+		btnChooseFile.addActionListener(this);
+	}
 
 	public void actionPerformed(ActionEvent evt) {
 		Object sourceObj = evt.getSource();
@@ -254,28 +254,28 @@ public class Client_1 extends JFrame implements ActionListener {
 		} else if (btnSend == sourceObj) {
 			try {
 				if ((txtClassName == null || txtClassName.getText().length() == 0)) {
-					JOptionPane.showMessageDialog(null, "Enter you class");
+					JOptionPane.showMessageDialog(null, "Enter class");
 					return;
 				} else if (!isSent) {
-
 					for (int i = 0; i < Studentlist.length; i++) {
 						System.out.println(Studentlist[i][0] + " " + Studentlist[i][1] + "  " + Studentlist[i][2]);
 						student = new Student(Studentlist[i][0], Studentlist[i][1], Studentlist[i][2]);
 						list.add(student);
-						
 					}
+
 					server1.sendData(Studentlist, className.getText());
 					server2.sendData(Studentlist, className.getText());
 					server3.sendData(Studentlist, className.getText());
-					
+
+					//server1.sortStudent(Studentlist);
 					server1.ListStudent(Studentlist);
 					server2.getTop5(Studentlist);
 					server3.classifyStudent(Studentlist);
-					
-					txtSortStudent.setText((String)server1.ListStudent(Studentlist));
-					txtTop5.setText((String)server2.getTop5(Studentlist));
-					txtClsStudent.setText((String)server3.classifyStudent(Studentlist));
-					
+
+//					 txtSortStudent.setText((String)server1.ListStudent(Studentlist));
+//					 txtTop5.setText((String)server2.getTop5(Studentlist));
+//					 txtClsStudent.setText((String)server3.classifyStudent(Studentlist));
+					//
 					isSent = true;// control send thread
 				} else
 					JOptionPane.showMessageDialog(null, "Submit only one");
@@ -283,21 +283,23 @@ public class Client_1 extends JFrame implements ActionListener {
 				ex.printStackTrace();
 				System.out.println("Exception: " + ex);
 			}
-		} 
+		}
 		// result button
-		else {
+		else  {
 			try {
-				Student s;
-				for(int i = 0; i < list.size(); i++) {
-					
-				}				
-				
-				txtSortStudent.setText((String)server1.ListStudent(Studentlist));
-				txtTop5.setText((String)server2.getTop5(Studentlist));
-				txtClsStudent.setText((String)server3.classifyStudent(Studentlist));
-				
+//				if ((server1.isResultReady()) && (server2.isResultReady()) && (server3.isResultReady())) {
+					txtSortStudent.setText((String) server1.ListStudent(Studentlist));
+					txtTop5.setText((String) server2.getTop5(Studentlist));
+					txtClsStudent.setText((String) server3.classifyStudent(Studentlist));
+
+//				} else {
+//					txtSortStudent.setText("Waiting for server");
+//					txtTop5.setText("Waiting for server");
+//					txtClsStudent.setText("Waiting for server");
+//				}
+
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				System.out.println("Error: " + ex);
 			}
 		}
 	}
