@@ -66,6 +66,7 @@ public class Client_1 extends JFrame implements ActionListener {
 	ArrayList<Student> list = new ArrayList<Student>();
 	Student student;
 
+	boolean server1Ready, server2Ready, server3Ready ;
 	public static void main(String[] args) {
 		new Client_1();
 	}
@@ -80,13 +81,13 @@ public class Client_1 extends JFrame implements ActionListener {
 			server3 = (ServerInterface) Naming.lookup(serverURL3);
 
 			// can not compare
-			while (true) {
-				Thread.sleep(1000);
-				// server is received data
-				if (server1.isResultReady() && server2.isResultReady() && server3.isResultReady()) {
-					btnResult.setVisible(true);// already to show result in client
-				}
-			}
+//			while (true) {
+//				Thread.sleep(1000);
+//				// server is received data
+//				if (server1.isResultReady() && server2.isResultReady() && server3.isResultReady()) {
+//					btnResult.setVisible(true);// already to show result in client
+//				}
+//			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -188,8 +189,8 @@ public class Client_1 extends JFrame implements ActionListener {
 		panel.add(btnSend);
 		panel.add(tabbedPane);
 
-		btnResult.setVisible(true);
-		btnSend.setVisible(true);
+		btnResult.setVisible(false);
+		btnSend.setVisible(false);
 
 		btnResult.addActionListener(this);
 		btnSend.addActionListener(this);
@@ -263,19 +264,23 @@ public class Client_1 extends JFrame implements ActionListener {
 						list.add(student);
 					}
 
-					server1.sendData(Studentlist, className.getText());
-					server2.sendData(Studentlist, className.getText());
-					server3.sendData(Studentlist, className.getText());
+					 server1Ready=  server1.sendData(Studentlist, className.getText());
+					 server2Ready = server2.sendData(Studentlist, className.getText());
+					 server3Ready = server3.sendData(Studentlist, className.getText());
 
-					//server1.sortStudent(Studentlist);
+					//server1.sortStudent(Studentlist); thay vi count thi tra ve true hay false luon
+					 
 					server1.ListStudent(Studentlist);
 					server2.getTop5(Studentlist);
+					
 					server3.classifyStudent(Studentlist);
-
+					if(server1Ready && server2Ready && server3Ready ) {
+						btnResult.setVisible(true);
+					}
 //					 txtSortStudent.setText((String)server1.ListStudent(Studentlist));
 //					 txtTop5.setText((String)server2.getTop5(Studentlist));
 //					 txtClsStudent.setText((String)server3.classifyStudent(Studentlist));
-					//
+					// 
 					isSent = true;// control send thread
 				} else
 					JOptionPane.showMessageDialog(null, "Submit only one");

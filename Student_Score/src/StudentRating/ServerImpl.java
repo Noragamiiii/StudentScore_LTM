@@ -11,16 +11,21 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface {
 
 	public ServerImpl() throws RemoteException {
 	}
+	// thay vì trả về void--> boolean --> 
 	@Override
-	public void sendData(String data[][], String className) throws RemoteException {
+	public boolean sendData(String data[][], String className) throws RemoteException {
 		System.out.println("Result from: " + className);
 		for (int i = 0; i < data.length; i++) {
 			Student s = new Student(data[i][0], data[i][1], data[i][2]);
 			list.add(s);
 			System.out.println(s.display());
+			count++;
 		}
-		count++;
-		System.out.println("Count: "+ count);
+		if(count >= 10) {
+			return true;
+		}
+		return false;
+//		System.out.println("Count: "+ count);
 	}
 	@Override
 	public String ListStudent(String Student[][]) {
