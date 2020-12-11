@@ -270,10 +270,9 @@ public class Client_1 extends JFrame implements ActionListener {
 
 					//server1.sortStudent(Studentlist); thay vi count thi tra ve true hay false luon
 					 
-					server1.ListStudent(Studentlist);
-					server2.getTop5(Studentlist);
-					
-					server3.classifyStudent(Studentlist);
+					//server1.ListStudent(Studentlist);
+					//server2.getTop5(Studentlist);
+					//server3.classifyStudent(Studentlist);
 					if(server1Ready && server2Ready && server3Ready ) {
 						btnResult.setVisible(true);
 					}
